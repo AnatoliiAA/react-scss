@@ -1,0 +1,54 @@
+@mixin complex-shadow-mixin(
+  $layers-of-shadow,
+  $horizontal-shift,
+  $vertical-shift,
+  $final-transparency,
+  $final-blur-radius
+) {
+  $rgba: (rgba(0, 0, 0, $final-transparency));
+  $result: (
+    ($horizontal-shift $vertical-shift $final-blur-radius $rgba) + ", "
+  );
+
+  @for $i from 1 through $layers-of-shadow {
+    $rgba: rgba(0, 0, 0, $final-transparency/($i * 1.1));
+    $result: $result +
+      (
+        ($horizontal-shift / ($i * (1.5 + $i/(2.5 + $i * 1.5))))
+          ($vertical-shift / ($i * (1.5 + $i/(2.5 + $i * 1.5))))
+          ($final-blur-radius / ($i * (1.5 + $i/(2.5 + $i * 1.5))))
+          $rgba
+      );
+    @if $i < $layers-of-shadow {
+      $result: $result + ", ";
+    }
+  }
+
+  $result: unquote($result);
+
+  box-shadow: $result;
+}
+
+@mixin blured-bottom-border($height, $color, $show-duration) {
+  &:after {
+    display: block;
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0px;
+    background: linear-gradient(
+      360deg,
+      $color 0%,
+      rgba($color, 0.5) 35%,
+      rgba($color, 0) 100%
+    );
+    transition: all $show-duration ease-in;
+  }
+  &:hover {
+    &:after {
+      height: $height;
+    }
+  }
+}

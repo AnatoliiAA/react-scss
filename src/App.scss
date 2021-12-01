@@ -1,0 +1,13 @@
+@import "./styles/reset";
+@import "./styles/color-palette";
+@import "./styles/fonts";
+
+body {
+  background-color: $body-background-color;
+  font-family: "Outfit", sans-serif;
+}
+
+#root {
+  max-width: 1440px;
+  margin: 50px auto 50px auto;
+}
